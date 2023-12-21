@@ -1,0 +1,19 @@
+{
+    "name": "alibabacloud/kms-kms20160120-sdk",
+    "description": "Alibaba Cloud KMS KMS20160120 SDK for PHP",
+    "type": "library",
+    "require": {
+        "alibabacloud/kms-20160120": "^1.1.0",
+        "alibabacloud/darabonba-openapi": "^0.2.8",
+        "alibabacloud/tea-utils": "^0.2.18",
+        "ext-openssl": "*",
+        "alibabacloud/dkms-gcs-sdk": "^v0.4.0"
+    },
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "AlibabaCloud\\Kms\\Kms20160120\\": "src"
+        }
+    },
+    "authors": []
+}

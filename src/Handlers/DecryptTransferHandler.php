@@ -40,6 +40,9 @@ class DecryptTransferHandler extends KmsTransferHandler
         }
 
         $ciphertextBlob = base64_decode($query["CiphertextBlob"]);
+        if (!$ciphertextBlob || strlen($ciphertextBlob) <= Constants::EKT_ID_LENGTH + Constants::GCM_IV_LENGTH) {
+            throw $this->newInvalidParameterClientException("CiphertextBlob");
+        }
         $ektIdBytes = substr($ciphertextBlob, 0, Constants::EKT_ID_LENGTH);
         $ivBytes = substr($ciphertextBlob, Constants::EKT_ID_LENGTH, Constants::GCM_IV_LENGTH);
         $rawCiphertextBytes = substr($ciphertextBlob, Constants::EKT_ID_LENGTH + Constants::GCM_IV_LENGTH);

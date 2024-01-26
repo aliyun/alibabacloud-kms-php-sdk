@@ -37,7 +37,7 @@ The recommended way to use the Alibaba Cloud KMS SDK for PHP in your project is 
 
 ```
 "require": {
-     "alibabacloud/kms-kms20160120": "^0.4.0"
+     "alibabacloud/kms-kms20160120": "^0.4.1"
  }
 ```
 
@@ -64,9 +64,9 @@ Introduction to KMS Client
 Sample code
 ----------
 ### 1. Scenarios where key operations are performed only through VPC gateways.
-#### Refer to the following sample code to call the KMS Encrypt API. For more API examples, see [operation samples](./examples/operation)
+#### Refer to the following sample code to call the KMS AdvanceEncrypt API. For more API examples, see [operation samples](./examples/operation)
 ```php
-public class Encrypt {
+public class AdvanceEncrypt {
 
     /**
      * @param string $clientKeyFile
@@ -95,24 +95,16 @@ public class Encrypt {
 
     /**
      * @param KmsSdkClient $client
-     * @param string $paddingMode
-     * @param int[] $aad
      * @param string $keyId
      * @param int[] $plaintext
-     * @param int[] $iv
-     * @param string $algorithm
-     * @return EncryptResponse
+     * @return AdvanceEncryptResponse
      */
-    public static function encrypt($client, $paddingMode, $aad, $keyId, $plaintext, $iv, $algorithm){
-        $request = new EncryptRequest([
-            "paddingMode" => $paddingMode,
-            "aad" => $aad,
+    public static function advanceEncrypt($client, $keyId, $plaintext){
+        $request = new AdvanceEncryptRequest([
             "keyId" => $keyId,
-            "plaintext" => $plaintext,
-            "iv" => $iv,
-            "algorithm" => $algorithm
+            "plaintext" => $plaintext
         ]);
-        return EncryptResponse::fromMap(Utils::toMap($client->encrypt($request)));
+        return AdvanceEncryptResponse::fromMap(Utils::toMap($client->advanceEncrypt($request)));
     }
 
     /**
@@ -122,13 +114,9 @@ public class Encrypt {
     public static function main($args){
         $kmsInstanceConfig = self::createKmsInstanceConfig(getenv("your client key file path env"), getenv("your client key password env"), "your kms instance endpoint", "your ca file path");
         $client = self::createClient($kmsInstanceConfig);
-        $paddingMode = "your paddingMode";
-        $aad = Utils::toBytes("your aad");
         $keyId = "your keyId";
         $plaintext = Utils::toBytes("your plaintext");
-        $iv = Utils::toBytes("your iv");
-        $algorithm = "your algorithm";
-        $response = self::encrypt($client, $paddingMode, $aad, $keyId, $plaintext, $iv, $algorithm);
+        $response = self::advanceEncrypt($client, $keyId, $plaintext);
         Console::log(Utils::toJSONString($response));
     }
 }
@@ -211,7 +199,7 @@ public class CreateKey {
 }
 ```
 ### 3. You must not only perform key operations through a VPC gateway, but also manage KMS resources through a public gateway.
-#### Refer to the following sample code to call the KMS CreateKey API and the Encrypt API. For more API examples, see [operation samples](./examples/operation) and [manage samples](./examples/manage)
+#### Refer to the following sample code to call the KMS CreateKey API and AdvanceEncrypt API. For more API examples, see [operation samples](./examples/operation) and [manage samples](./examples/manage)
 ```php
 public class Sample {
 
@@ -252,16 +240,12 @@ public class Sample {
         return $client->createKey($request);
     }
 
-    public static function encrypt($client, $paddingMode, $aad, $keyId, $plaintext, $iv, $algorithm){
-        $request = new EncryptRequest([
-            "paddingMode" => $paddingMode,
-            "aad" => $aad,
+    public static function advanceEncrypt($client, $keyId, $plaintext){
+        $request = new AdvanceEncryptRequest([
             "keyId" => $keyId,
-            "plaintext" => $plaintext,
-            "iv" => $iv,
-            "algorithm" => $algorithm
+            "plaintext" => $plaintext
         ]);
-        return EncryptResponse::fromMap(Utils::toMap($client->encrypt($request)));
+        return AdvanceEncryptResponse::fromMap(Utils::toMap($client->advanceEncrypt($request)));
     }
 
     public static function main($args){
@@ -281,13 +265,9 @@ public class Sample {
         $response = self::createKey($client, $enableAutomaticRotation, $rotationInterval, $keyUsage, $origin, $description, $dKMSInstanceId, $protectionLevel, $keySpec);
         Console::log(Utils::toJSONString($response));
 
-        $paddingMode = "your paddingMode";
-        $aad = Utils::toBytes("your aad");
         $keyId = "your keyId";
         $plaintext = Utils::toBytes("your plaintext");
-        $iv = Utils::toBytes("your iv");
-        $algorithm = "your algorithm";
-        $response = self::encrypt($client, $paddingMode, $aad, $keyId, $plaintext, $iv, $algorithm);
+        $response = self::advanceEncrypt($client, $keyId, $plaintext);
         Console::log(Utils::toJSONString($response));
     }
 }

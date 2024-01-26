@@ -20,7 +20,7 @@ class Constants
     const ALG_AES_GCM = 2;
     const HTTP_OK = 200;
     const SDK_NAME = "alibabacloud-kms-php-sdk";
-    const SDK_VERSION = "0.4.0";
+    const SDK_VERSION = "0.4.1";
     const CLIENT_USER_AGENT = self::SDK_NAME . "-client/" . self::SDK_VERSION;
     const TRANSFER_CLIENT_USER_AGENT = self::SDK_NAME . "-transfer-client/" . self::SDK_VERSION;
 }

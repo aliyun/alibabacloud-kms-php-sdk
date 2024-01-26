@@ -114,6 +114,18 @@ abstract class KmsTransferHandler
     }
 
     /**
+     * @param string $paramName
+     * @return TeaError
+     */
+    public function newInvalidParameterClientException($paramName)
+    {
+        return new TeaError([
+            "code" => KmsErrorCodeTransferUtils::INVALID_PARAMETER_ERROR_CODE,
+            "message" => "The parameter $paramName is invalid.",
+        ]);
+    }
+
+    /**
      * @param KmsRuntimeOptions $runtimeOptions
      * @return RuntimeOptions
      */

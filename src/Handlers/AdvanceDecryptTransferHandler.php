@@ -41,6 +41,9 @@ class AdvanceDecryptTransferHandler extends KmsTransferHandler
         }
 
         $ciphertextBlob = base64_decode($query["CiphertextBlob"]);
+        if (!$ciphertextBlob || strlen($ciphertextBlob) <= Constants::EKT_ID_LENGTH + Constants::GCM_IV_LENGTH) {
+            throw $this->newInvalidParameterClientException("CiphertextBlob");
+        }
         $ivBytes = substr($ciphertextBlob, Constants::EKT_ID_LENGTH, Constants::EKT_ID_LENGTH + Constants::GCM_IV_LENGTH);
         $cipherVerAndPaddingMode = Constants::CIPHER_VER << 4 | 0;
         $cipherHeader = pack("CCC", ord(Constants::MAGIC_NUM), $cipherVerAndPaddingMode, Constants::ALG_AES_GCM);
